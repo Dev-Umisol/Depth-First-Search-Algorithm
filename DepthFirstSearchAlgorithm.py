@@ -10,7 +10,7 @@ def dfs(undirected_adj_matrix, node_label):
     visited = []
     
     while stack:
-        node = stack.pop() # pop node from last element in the list since dfs is FIFO
+        node = stack.pop() # pop node from last element in the list since dfs is LIFO
         
         if node not in visited:
             visited.append(node) # add node to visited
