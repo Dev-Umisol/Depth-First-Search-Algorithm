@@ -18,6 +18,13 @@ This project explores graph theory by implementing a non-recursive Depth-First S
 
 ---
 
+## 🛠️ Technologies Used
+| Tool / Library | Language |
+|---|---|
+| Python 3.x | Core Language |
+
+---
+
 ## 💡 How It Works
 
 The function takes the matrix and a starting node. It pushes the start node onto a stack. While the stack isn't empty, it pops a node, marks it as visited, and finds all neighbors in the matrix that haven't been visited yet, pushing them onto the stack.
