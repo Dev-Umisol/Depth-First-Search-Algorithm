@@ -1,65 +1,93 @@
-# 📁 DFS Adjacency Matrix Traversal
-> A Python implementation of the Depth-First Search algorithm designed to traverse undirected graphs represented by adjacency matrices.
+# 📁 Depth First Search (DFS)
+
+> A Python implementation of the Depth First Search graph traversal algorithm using an iterative stack-based approach.
+
+![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Complete-brightgreen)
+![Learning](https://img.shields.io/badge/Learning-Journey-orange)
+![DSA](https://img.shields.io/badge/Topic-Algorithms-red?logo=python&logoColor=white)
 
 ---
 
 ## 📌 About
 
-This project explores graph theory by implementing a non-recursive Depth-First Search (DFS). The algorithm processes an **Adjacency Matrix** a square grid where a `1` at `matrix[i][j]` indicates a connection between node `i` and node `j`. This approach is particularly useful for understanding how computers represent physical networks, social connections, or map data in memory
+This project implements Depth First Search, one of the two fundamental graph traversal algorithms alongside BFS. Where BFS (implemented in the Generate Parentheses project) explores level by level using a queue, DFS dives as deep as possible along each path before backtracking, using a stack. Built to understand the LIFO traversal strategy, how disconnected graphs behave, and how stack-based iteration mirrors recursive DFS without the call stack overhead.
 
 ---
 
 ## 🧠 What I Learned
 
-- **Adjacency Matrix Navigation** — Mapping rows and columns to node labels. By iterating through a specific row, I learned how to identify all neighbors of a specific vertex in O(V) time.
-- **The LIFO Principle** — Utilizing the `list.pop()` method to create a Last-In, First-Out (LIFO) structure, which forces the search to explore the full depth of a branch before backtracking.
-- **Handling Disconnected Graphs** — Observation of how the algorithm behaves when starting at an isolated node (as seen in the example output for node 3 in a sparse matrix).
-- **Cyclic Graph Prevention** — Using a `visited` collection to ensure that the algorithm doesn't get trapped in infinite loops when traversing undirected edges that point back to previously visited nodes.
+- **LIFO stack for DFS** — Using `stack.pop()` to always process the most recently added node first, which drives the algorithm deep into the graph before exploring other branches — the defining behavior of depth-first traversal
+- **BFS vs DFS side by side** — Having implemented BFS (via `queue.pop(0)`) in the Generate Parentheses project, the contrast is clear: swapping FIFO for LIFO is what separates the two traversal strategies entirely
+- **`enumerate()` on adjacency matrix rows** — Using `for index, value in enumerate(matrix[node])` to check every column in the current node's row, and only pushing neighbors to the stack where `value == 1`
+- **Visited list for cycle prevention** — Checking `if node not in visited` before processing ensures nodes aren't revisited in graphs with cycles, preventing infinite loops
+- **Disconnected graph behavior** — Testing with a disconnected graph (nodes 2 and 3 isolated from 0 and 1) confirms that DFS only traverses the connected component containing the start node, unreachable nodes are simply never visited
+- **Iterative vs recursive DFS** — Understanding that the stack-based iterative approach produces the same traversal order as recursion but avoids Python's recursion depth limit on very large graphs
 
 ---
 
 ## 🛠️ Technologies Used
-| Tool / Library | Language |
+
+| Tool / Library | Purpose |
 |---|---|
-| Python 3.x | Core Language |
+| Python 3.x | Core language |
 
 ---
 
 ## 💡 How It Works
 
-The function takes the matrix and a starting node. It pushes the start node onto a stack. While the stack isn't empty, it pops a node, marks it as visited, and finds all neighbors in the matrix that haven't been visited yet, pushing them onto the stack.
+The graph is represented as an undirected adjacency matrix. The algorithm starts at the given node, pushes it to the stack, and repeatedly pops and explores unvisited neighbors until the stack is empty.
 
 ```
-# Matrix representing: 0 -- 1 -- 2 -- 3
-matrix = [
-  [0, 1, 0, 0],
-  [1, 0, 1, 0],
-  [0, 1, 0, 1],
-  [0, 0, 1, 0]
-]
+Graph (4 nodes):
+0 - 1 - 2 - 3
 
-dfs(matrix, 1) # Result: [1, 2, 3, 0] (Deep dive order)
+Matrix:
+[0, 1, 0, 0]
+[1, 0, 1, 0]
+[0, 1, 0, 1]
+[0, 0, 1, 0]
+
+DFS from node 1:
+Stack: [1] → pop 1, visited: [1] → push 0, 2
+Stack: [0, 2] → pop 2, visited: [1, 2] → push 1, 3
+Stack: [0, 1, 3] → pop 3, visited: [1, 2, 3] → push 2
+Stack: [0, 1, 2] → pop 2 (already visited)
+Stack: [0, 1] → pop 1 (already visited)
+Stack: [0] → pop 0, visited: [1, 2, 3, 0]
+Result: [1, 2, 3, 0]
+```
+
+**Example output:**
+```python
+dfs(matrix, 1)  # [1, 2, 3, 0]
+dfs(matrix, 3)  # [3, 2, 1, 0]
+
+# Disconnected graph — node 3 is isolated
+dfs(disconnected_matrix, 3)  # [3]
+dfs(disconnected_matrix, 0)  # [0, 1]
 ```
 
 ---
 
 ## 🚀 Future Improvements
 
-- [ ] Efficiency Upgrade: Replace the `visited` list check with a `set()` to move from O(n) to O(1) lookup time.
-- [ ] Graph Variety: Add support for **Adjacency Lists** (dictionaries), which are more space efficient for sparse graphs.
-- [ ] Pathfinding: Modify the algorithm to return the shortest path between two specific nodes.
-- [ ] Visualization: Use the `networkx` library to draw the graph and highlight the DFS path.
+- [ ] Implement BFS directly alongside DFS and compare traversal order on the same graph
+- [ ] Add cycle detection — track back edges during traversal to identify loops
+- [ ] Extend to directed graphs and test behavior with one-way edges
+- [ ] Implement the recursive version and compare output and performance
 
 ---
 
 ## 📂 Project Structure
+
 ```
-dfs-matrix-traversal/
+depth-first-search/
 │
-├── DepthFirstSearchAlgorithm.py     # DFS implementation and example test cases
+├── DepthFirstSearchAlgorithm.py    # dfs function and example usage
 └── README.md
 ```
 
 ---
 
-*Part of my Python learning journey 🐍 — exploring graph structures, matrices, and stack based traversal*
+*Part of my Python learning journey 🐍 — completing the graph traversal pair alongside BFS and Dijkstra's shortest path*
